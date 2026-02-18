@@ -170,7 +170,7 @@ export default function Home() {
         <section>
           <SearchBar canAdd={selectedCount < 6} onSelect={handleAdd} />
           <TeamSlots team={team} onRemove={handleRemove} />
-          <TeamSuggestions focusStat={focusStat} suggestions={suggestions} />
+          <TeamSuggestions focusStat={focusStat} suggestions={suggestions} canAdd={selectedCount < 6} onAdd={handleAdd} />
         </section>
         <AnalysisTable rows={coverage} />
       </div>

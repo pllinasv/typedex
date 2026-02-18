@@ -6,11 +6,13 @@ import { SuggestionRow } from "@/lib/types";
 type TeamSuggestionsProps = {
   focusStat: string;
   suggestions: SuggestionRow[];
+  canAdd: boolean;
+  onAdd: (pokemon: SuggestionRow["pokemon"]) => void;
 };
 
 const formatStatLabel = (value: string) => value.replace("_", " ").replace("_", " ");
 
-export default function TeamSuggestions({ focusStat, suggestions }: TeamSuggestionsProps) {
+export default function TeamSuggestions({ focusStat, suggestions, canAdd, onAdd }: TeamSuggestionsProps) {
   return (
     <section className="mt-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
       <h2 className="text-lg font-semibold text-slate-900">Suggested Adds</h2>
@@ -36,6 +38,14 @@ export default function TeamSuggestions({ focusStat, suggestions }: TeamSuggesti
                 ))}
               </div>
             </div>
+            <button
+              type="button"
+              onClick={() => onAdd(item.pokemon)}
+              disabled={!canAdd}
+              className="shrink-0 rounded-md border border-slate-300 px-2 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Add
+            </button>
           </article>
         ))}
       </div>

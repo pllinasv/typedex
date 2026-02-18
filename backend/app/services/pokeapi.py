@@ -30,18 +30,19 @@ class PokeAPIService:
             return self._names
 
     async def _load_detail(self, name: str) -> PokemonBasic:
-        cached = self._details.get(name)
+        key = name.strip().lower()
+        cached = self._details.get(key)
         if cached is not None:
             return cached
         async with self._detail_lock:
-            cached = self._details.get(name)
+            cached = self._details.get(key)
             if cached is not None:
                 return cached
-            data = await self._get_json(f"{self.base_url}/pokemon/{name}")
+            data = await self._get_json(f"{self.base_url}/pokemon/{key}")
             sprite = data.get("sprites", {}).get("front_default")
             types = [t["type"]["name"] for t in sorted(data.get("types", []), key=lambda x: x["slot"])]
             parsed = PokemonBasic(id=data["id"], name=data["name"], sprite=sprite, types=types)
-            self._details[name] = parsed
+            self._details[key] = parsed
             return parsed
 
     async def search(self, query: str, limit: int = 10) -> list[PokemonBasic]:
@@ -53,3 +54,17 @@ class PokeAPIService:
         if not matched:
             return []
         return await asyncio.gather(*(self._load_detail(name) for name in matched))
+
+    async def get_team(self, names: list[str]) -> list[PokemonBasic]:
+        clean_names = [name.strip().lower() for name in names if name.strip()]
+        unique_names: list[str] = []
+        seen: set[str] = set()
+        for name in clean_names:
+            if name in seen:
+                continue
+            seen.add(name)
+            unique_names.append(name)
+        if not unique_names:
+            return []
+        team = await asyncio.gather(*(self._load_detail(name) for name in unique_names))
+        return team[:6]

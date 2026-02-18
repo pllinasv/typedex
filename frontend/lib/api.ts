@@ -1,4 +1,4 @@
-import { PokemonBasic } from "@/lib/types";
+import { AnalyzeResponse, PokemonBasic } from "@/lib/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
 
@@ -15,4 +15,18 @@ export async function searchPokemon(query: string): Promise<PokemonBasic[]> {
   }
   const data = (await response.json()) as SearchResponse;
   return data.results;
+}
+
+export async function analyzeTeam(team: string[]): Promise<AnalyzeResponse> {
+  const response = await fetch(`${API_BASE_URL}/analyze`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ team })
+  });
+  if (!response.ok) {
+    throw new Error("Analyze request failed");
+  }
+  return (await response.json()) as AnalyzeResponse;
 }

@@ -26,6 +26,17 @@ export default function TeamSlots({ team, onRemove }: TeamSlotsProps) {
             )}
             <div className="min-w-0 flex-1">
               <p className="retro-text text-2xl">{pokemon ? formatPokemonName(pokemon.name) : "Empty slot"}</p>
+              {pokemon?.stats ? (
+                <div className="retro-subtext mt-1 grid grid-cols-4 gap-x-2 gap-y-1 text-base">
+                  <span>HP {pokemon.stats.hp}</span>
+                  <span>Atk {pokemon.stats.attack}</span>
+                  <span>Def {pokemon.stats.defense}</span>
+                  <span>SpA {pokemon.stats.special_attack}</span>
+                  <span>SpD {pokemon.stats.special_defense}</span>
+                  <span>Spe {pokemon.stats.speed}</span>
+                  <span className="col-span-2">BST {pokemon.stats.total}</span>
+                </div>
+              ) : null}
             </div>
           </div>
           <div className="flex min-h-7 items-end justify-between gap-3">

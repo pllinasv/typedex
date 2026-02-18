@@ -62,11 +62,18 @@ export default function SearchBar({ canAdd, onSelect }: SearchBarProps) {
                   key={pokemon.id}
                   type="button"
                   onClick={() => handleSelect(pokemon)}
-                  className="flex w-full flex-col items-start gap-1 border-b border-slate-100 px-4 py-3 text-left last:border-b-0 hover:bg-slate-50 disabled:cursor-not-allowed sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-3"
+                  className="flex w-full items-center justify-between gap-3 border-b border-slate-100 px-4 py-3 text-left last:border-b-0 hover:bg-slate-50 disabled:cursor-not-allowed"
                   disabled={!canAdd}
                 >
-                  <span className="min-w-0 text-sm font-medium text-slate-900">{formatPokemonName(pokemon.name)}</span>
-                  <span className="flex flex-wrap gap-1 sm:shrink-0">
+                  <span className="flex min-w-0 items-center gap-3">
+                    {pokemon.sprite ? (
+                      <img src={pokemon.sprite} alt={pokemon.name} width={40} height={40} loading="lazy" className="h-10 w-10 shrink-0" />
+                    ) : (
+                      <span className="h-10 w-10 shrink-0 rounded-md bg-slate-100" />
+                    )}
+                    <span className="min-w-0 text-sm font-medium text-slate-900">{formatPokemonName(pokemon.name)}</span>
+                  </span>
+                  <span className="flex shrink-0 flex-wrap justify-end gap-1">
                     {pokemon.types.map((type) => (
                       <TypeBadgeIcon key={`${pokemon.id}-${type}`} type={type} compact />
                     ))}

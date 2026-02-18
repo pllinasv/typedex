@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { formatPokemonName } from "@/lib/format";
 import { PokemonBasic } from "@/lib/types";
 
 type TeamSlotsProps = {
@@ -22,7 +23,7 @@ export default function TeamSlots({ team, onRemove }: TeamSlotsProps) {
             </div>
           )}
           <div className="min-w-0 flex-1 self-stretch">
-            <p className="break-words text-lg font-semibold capitalize text-slate-900">{pokemon?.name ?? "Empty slot"}</p>
+            <p className="text-lg font-semibold text-slate-900">{pokemon ? formatPokemonName(pokemon.name) : "Empty slot"}</p>
             <div className="mt-1 flex flex-wrap gap-2">
               {pokemon?.types?.map((type) => (
                 <span key={type} className="rounded-md bg-slate-100 px-2 py-1 text-xs font-medium uppercase text-slate-700">

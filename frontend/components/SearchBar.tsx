@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { searchPokemon } from "@/lib/api";
+import { formatPokemonName } from "@/lib/format";
 import { PokemonBasic } from "@/lib/types";
 
 type SearchBarProps = {
@@ -60,11 +61,11 @@ export default function SearchBar({ canAdd, onSelect }: SearchBarProps) {
                   key={pokemon.id}
                   type="button"
                   onClick={() => handleSelect(pokemon)}
-                  className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-start gap-3 border-b border-slate-100 px-4 py-3 text-left last:border-b-0 hover:bg-slate-50 disabled:cursor-not-allowed"
+                  className="flex w-full flex-col items-start gap-1 border-b border-slate-100 px-4 py-3 text-left last:border-b-0 hover:bg-slate-50 disabled:cursor-not-allowed sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-3"
                   disabled={!canAdd}
                 >
-                  <span className="min-w-0 break-words text-sm font-medium capitalize text-slate-900">{pokemon.name}</span>
-                  <span className="shrink-0 text-xs uppercase text-slate-500">{pokemon.types.join(" / ")}</span>
+                  <span className="min-w-0 text-sm font-medium text-slate-900">{formatPokemonName(pokemon.name)}</span>
+                  <span className="text-xs uppercase text-slate-500 sm:shrink-0">{pokemon.types.join(" / ")}</span>
                 </button>
               ))
             : null}

@@ -26,18 +26,8 @@ export default function TeamSlots({ team, onRemove }: TeamSlotsProps) {
             <div className="min-w-0 flex-1">
               <p className="text-lg font-semibold text-slate-900">{pokemon ? formatPokemonName(pokemon.name) : "Empty slot"}</p>
             </div>
-            <div className="ml-auto">
-              <button
-                type="button"
-                disabled={!pokemon}
-                onClick={() => onRemove(index)}
-                className="shrink-0 rounded-md border border-slate-300 px-2 py-1 text-xs font-medium text-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                Remove
-              </button>
-            </div>
           </div>
-          <div className="min-h-7">
+          <div className="flex min-h-7 items-end justify-between gap-3">
             <div className="flex flex-wrap gap-2">
               {pokemon?.types?.map((type) => (
                 <span key={type} className="rounded-md bg-slate-100 px-2 py-1 text-xs font-medium uppercase text-slate-700">
@@ -45,6 +35,14 @@ export default function TeamSlots({ team, onRemove }: TeamSlotsProps) {
                 </span>
               ))}
             </div>
+            <button
+              type="button"
+              disabled={!pokemon}
+              onClick={() => onRemove(index)}
+              className="shrink-0 rounded-md border border-slate-300 px-2 py-1 text-xs font-medium text-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Remove
+            </button>
           </div>
         </article>
       ))}

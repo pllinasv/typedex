@@ -8,6 +8,7 @@ import TeamStatsSummary from "@/components/TeamStatsSummary";
 import TeamSuggestions from "@/components/TeamSuggestions";
 import { analyzeTeam, searchPokemon, suggestTeam } from "@/lib/api";
 import { PokemonBasic, SuggestionRow, TeamAverages, TypeCoverageRow } from "@/lib/types";
+import { playCatchEmAllSound } from "@/lib/easterEgg";
 import { getPresetRegions, normalizeRegionPreset, normalizeRegions, REGION_OPTIONS, REGION_PRESETS, RegionKey } from "@/lib/regions";
 import { normalizeTheme, THEME_OPTIONS, ThemeKey } from "@/lib/themes";
 
@@ -64,8 +65,10 @@ export default function Home() {
   const [regions, setRegions] = useState<RegionKey[]>([]);
   const [regionPreset, setRegionPreset] = useState("custom");
   const [theme, setTheme] = useState<ThemeKey>("kanto-green");
+  const [showCatchToast, setShowCatchToast] = useState(false);
   const [isHydratedFromQuery, setIsHydratedFromQuery] = useState(false);
   const statsRequestId = useRef(0);
+  const catchToastTimeoutRef = useRef<number | null>(null);
   const selectedCount = useMemo(() => team.filter(Boolean).length, [team]);
 
   useEffect(() => {
@@ -224,6 +227,15 @@ export default function Home() {
     }
   };
 
+  const handlePokemonTitleClick = () => {
+    playCatchEmAllSound();
+    setShowCatchToast(true);
+    if (catchToastTimeoutRef.current !== null) {
+      window.clearTimeout(catchToastTimeoutRef.current);
+    }
+    catchToastTimeoutRef.current = window.setTimeout(() => setShowCatchToast(false), 2400);
+  };
+
   const handleClearTeam = () => {
     setTeam(EMPTY_TEAM);
   };
@@ -233,7 +245,17 @@ export default function Home() {
       <div className="retro-shell">
       <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="retro-title text-xl sm:text-2xl">Pokemon Team Builder</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="retro-title text-xl sm:text-2xl">Pokemon Team Builder</h1>
+            <button
+              type="button"
+              onClick={handlePokemonTitleClick}
+              className="retro-pokeball-btn"
+              aria-label="Pokeball easter egg"
+            >
+              <img src="/pokeball-8bit.svg" alt="" aria-hidden="true" className="h-6 w-6" />
+            </button>
+          </div>
           <p className="retro-subtext mt-2 text-xl">{selectedCount}/6 selected</p>
         </div>
         <div className="w-full sm:w-72">
@@ -317,6 +339,13 @@ export default function Home() {
         </section>
         <AnalysisTable rows={coverage} />
       </div>
+      {showCatchToast ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+          <div className="retro-toast">
+            <p className="retro-toast-text text-base sm:text-lg">CATCH EM ALL!</p>
+          </div>
+        </div>
+      ) : null}
       </div>
     </main>
   );

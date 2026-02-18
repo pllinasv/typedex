@@ -258,4 +258,50 @@ body {
     background: var(--button-pressed-bg);
     box-shadow: var(--shadow-button-active);
   }
+
+  .retro-pokeball {
+    @apply relative h-9 w-9 rounded-full border-4 transition active:translate-y-[1px];
+    border-color: #111114;
+    background: linear-gradient(to bottom, #d33f44 0 47%, #f2f3f5 47% 100%);
+    box-shadow: 3px 3px 0 #111114;
+  }
+
+  .retro-pokeball-btn {
+    @apply flex h-9 w-9 items-center justify-center border-4 p-0.5 transition active:translate-y-[1px];
+    border-color: var(--button-border);
+    background: var(--surface-soft);
+    box-shadow: 3px 3px 0 var(--button-border);
+  }
+
+  .retro-pokeball-btn:hover {
+    background: var(--surface-hover);
+  }
+
+  .retro-pokeball::before {
+    content: "";
+    @apply absolute left-0 right-0 top-1/2 h-[4px] -translate-y-1/2;
+    background: #1e1f23;
+  }
+
+  .retro-pokeball::after {
+    content: "";
+    @apply absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px];
+    border-color: #1e1f23;
+    background: #f8f9fb;
+    box-shadow: inset 0 0 0 1px #d5d9de;
+  }
+
+  .retro-toast {
+    @apply border-4 px-6 py-4;
+    border-color: #101013;
+    background: #f7f7f8;
+    box-shadow: 6px 6px 0 #101013;
+  }
+
+  .retro-toast-text {
+    font-family: "Press Start 2P", ui-monospace, monospace;
+    letter-spacing: 0.04em;
+    color: #121216;
+    text-shadow: 1px 1px 0 #fefefe;
+  }
 }

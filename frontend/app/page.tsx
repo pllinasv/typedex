@@ -1,12 +1,25 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import SearchBar from "@/components/SearchBar";
 import TeamSlots from "@/components/TeamSlots";
 import { PokemonBasic } from "@/lib/types";
 
 export default function Home() {
   const [team, setTeam] = useState<Array<PokemonBasic | null>>(Array(6).fill(null));
   const selectedCount = useMemo(() => team.filter(Boolean).length, [team]);
+
+  const handleAdd = (pokemon: PokemonBasic) => {
+    setTeam((current) => {
+      const slot = current.findIndex((item) => item === null);
+      if (slot === -1) {
+        return current;
+      }
+      const next = [...current];
+      next[slot] = pokemon;
+      return next;
+    });
+  };
 
   const handleRemove = (index: number) => {
     setTeam((current) => {
@@ -22,6 +35,7 @@ export default function Home() {
         <h1 className="text-3xl font-bold text-slate-900">Pokemon Team Builder</h1>
         <p className="mt-1 text-sm text-slate-600">{selectedCount}/6 selected</p>
       </header>
+      <SearchBar canAdd={selectedCount < 6} onSelect={handleAdd} />
       <TeamSlots team={team} onRemove={handleRemove} />
     </main>
   );

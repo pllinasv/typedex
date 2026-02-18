@@ -1,0 +1,18 @@
+import { PokemonBasic } from "@/lib/types";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+
+type SearchResponse = {
+  query: string;
+  results: PokemonBasic[];
+};
+
+export async function searchPokemon(query: string): Promise<PokemonBasic[]> {
+  const params = new URLSearchParams({ q: query, limit: "10" });
+  const response = await fetch(`${API_BASE_URL}/pokemon/search?${params.toString()}`);
+  if (!response.ok) {
+    throw new Error("Search request failed");
+  }
+  const data = (await response.json()) as SearchResponse;
+  return data.results;
+}

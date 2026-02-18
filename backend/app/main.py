@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Query
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.schemas import AnalyzeRequest, AnalyzeResponse, SearchResponse, TypeCoverageRow
 from app.services.pokeapi import PokeAPIService
@@ -6,6 +7,14 @@ from app.services.typechart import ATTACKING_TYPES, multiplier
 
 app = FastAPI(title="Pokemon Team Builder API")
 pokeapi_service = PokeAPIService()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/health")

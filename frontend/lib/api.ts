@@ -1,7 +1,17 @@
 import { AnalyzeResponse, PokemonBasic, SuggestionsResponse } from "@/lib/types";
 import { RegionKey } from "@/lib/regions";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+const getApiBaseUrl = () => {
+  if (process.env.NEXT_PUBLIC_API_BASE_URL) {
+    return process.env.NEXT_PUBLIC_API_BASE_URL;
+  }
+  if (typeof window !== "undefined" && window.location.hostname.endsWith("github.io")) {
+    return "https://typedex.onrender.com";
+  }
+  return "http://localhost:8000";
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 type SearchResponse = {
   query: string;

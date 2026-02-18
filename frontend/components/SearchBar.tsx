@@ -65,7 +65,7 @@ export default function SearchBar({ canAdd, regions, onSelect }: SearchBarProps)
         <div className="retro-panel absolute z-20 mt-2 max-h-72 w-full overflow-y-auto">
           {isPllinasEasterEgg ? (
             <div className="retro-highlight mx-3 my-3 flex items-center gap-3 px-3 py-3">
-              <img src="/pokeball-8bit.svg" alt="" aria-hidden="true" className="h-10 w-10" />
+              <img src="./pokeball-8bit.svg" alt="" aria-hidden="true" className="h-10 w-10" />
               <div className="min-w-0 flex-1">
                 <p className="retro-title text-xs sm:text-sm">Secret Trainer Found</p>
                 <p className="retro-subtext text-lg">PLLINAS used FULL STACK. It&apos;s super effective.</p>

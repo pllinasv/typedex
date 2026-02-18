@@ -253,7 +253,7 @@ export default function Home() {
               className="retro-pokeball-btn"
               aria-label="Pokeball easter egg"
             >
-              <img src="/pokeball-8bit.svg" alt="" aria-hidden="true" className="h-6 w-6" />
+              <img src="./pokeball-8bit.svg" alt="" aria-hidden="true" className="h-6 w-6" />
             </button>
           </div>
           <p className="retro-subtext mt-2 text-xl">{selectedCount}/6 selected</p>

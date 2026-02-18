@@ -112,6 +112,8 @@ class PokeAPIService:
                 return cached
             data = await self._get_json(f"{self.base_url}/pokemon/{key}")
             sprite = data.get("sprites", {}).get("front_default")
+            cries = data.get("cries", {})
+            cry = cries.get("latest") or cries.get("legacy")
             types = [t["type"]["name"] for t in sorted(data.get("types", []), key=lambda x: x["slot"])]
             parsed_stats = {entry["stat"]["name"]: entry["base_stat"] for entry in data.get("stats", [])}
             stats = PokemonStats(
@@ -130,7 +132,7 @@ class PokeAPIService:
                     + parsed_stats.get("speed", 0)
                 ),
             )
-            parsed = PokemonBasic(id=data["id"], name=data["name"], sprite=sprite, types=types, stats=stats)
+            parsed = PokemonBasic(id=data["id"], name=data["name"], sprite=sprite, cry=cry, types=types, stats=stats)
             self._details[key] = parsed
             return parsed
 

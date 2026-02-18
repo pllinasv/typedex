@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import TypeBadgeIcon from "@/components/TypeBadgeIcon";
+import { playPokemonCry, resolvePokemonCryUrl } from "@/lib/cry";
 import { formatPokemonName } from "@/lib/format";
 import { SuggestionRow } from "@/lib/types";
 
@@ -15,6 +16,10 @@ const formatStatLabel = (value: string) => value.replace("_", " ").replace("_", 
 
 export default function TeamSuggestions({ focusStat, suggestions, canAdd, onAdd }: TeamSuggestionsProps) {
   const [selectedPokemon, setSelectedPokemon] = useState<SuggestionRow["pokemon"] | null>(null);
+  const handleOpenDetails = (pokemon: SuggestionRow["pokemon"]) => {
+    setSelectedPokemon(pokemon);
+    playPokemonCry(resolvePokemonCryUrl(pokemon.id, pokemon.cry));
+  };
 
   return (
     <section className="retro-panel mt-6 p-4">
@@ -44,7 +49,7 @@ export default function TeamSuggestions({ focusStat, suggestions, canAdd, onAdd 
             <div className="flex shrink-0 flex-col gap-1">
               <button
                 type="button"
-                onClick={() => setSelectedPokemon(item.pokemon)}
+                onClick={() => handleOpenDetails(item.pokemon)}
                 className="retro-button px-2 py-1 text-base"
               >
                 Details

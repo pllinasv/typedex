@@ -15,6 +15,7 @@ class PokemonBasic(BaseModel):
     id: int
     name: str
     sprite: str | None = None
+    cry: str | None = None
     types: list[str] = Field(default_factory=list)
     stats: PokemonStats | None = None
 

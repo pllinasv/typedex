@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import TypeBadgeIcon from "@/components/TypeBadgeIcon";
+import { playPokemonCry, resolvePokemonCryUrl } from "@/lib/cry";
 import { formatPokemonName } from "@/lib/format";
 import { PokemonBasic } from "@/lib/types";
 
@@ -13,6 +14,13 @@ type TeamSlotsProps = {
 
 export default function TeamSlots({ team, onRemove }: TeamSlotsProps) {
   const [selectedPokemon, setSelectedPokemon] = useState<PokemonBasic | null>(null);
+  const handleOpenDetails = (pokemon: PokemonBasic | null) => {
+    if (!pokemon) {
+      return;
+    }
+    setSelectedPokemon(pokemon);
+    playPokemonCry(resolvePokemonCryUrl(pokemon.id, pokemon.cry));
+  };
 
   return (
     <>
@@ -44,7 +52,7 @@ export default function TeamSlots({ team, onRemove }: TeamSlotsProps) {
                 <button
                   type="button"
                   disabled={!pokemon}
-                  onClick={() => setSelectedPokemon(pokemon)}
+                  onClick={() => handleOpenDetails(pokemon)}
                   className="retro-button shrink-0 px-2 py-1 text-base disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Details

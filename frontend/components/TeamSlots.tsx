@@ -1,4 +1,5 @@
 import Image from "next/image";
+import TypeBadgeIcon from "@/components/TypeBadgeIcon";
 import { formatPokemonName } from "@/lib/format";
 import { PokemonBasic } from "@/lib/types";
 
@@ -30,9 +31,7 @@ export default function TeamSlots({ team, onRemove }: TeamSlotsProps) {
           <div className="flex min-h-7 items-end justify-between gap-3">
             <div className="flex flex-wrap gap-2">
               {pokemon?.types?.map((type) => (
-                <span key={type} className="rounded-md bg-slate-100 px-2 py-1 text-xs font-medium uppercase text-slate-700">
-                  {type}
-                </span>
+                <TypeBadgeIcon key={type} type={type} />
               ))}
             </div>
             <button

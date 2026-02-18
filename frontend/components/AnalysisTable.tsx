@@ -1,12 +1,9 @@
+import TypeBadgeIcon from "@/components/TypeBadgeIcon";
 import { TypeCoverageRow } from "@/lib/types";
 
 type AnalysisTableProps = {
   rows: TypeCoverageRow[];
 };
-
-const TYPE_ICON_BASE_URL = "https://play.pokemonshowdown.com/sprites/types";
-
-const formatTypeName = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
 
 export default function AnalysisTable({ rows }: AnalysisTableProps) {
   return (
@@ -28,15 +25,7 @@ export default function AnalysisTable({ rows }: AnalysisTableProps) {
               <tr key={row.attacking_type} className="border-b border-slate-100 last:border-b-0">
                 <td className="px-2 py-2 font-medium text-slate-900">
                   <div className="flex items-center gap-2">
-                    <img
-                      src={`${TYPE_ICON_BASE_URL}/${formatTypeName(row.attacking_type)}.png`}
-                      alt={row.attacking_type}
-                      width={18}
-                      height={18}
-                      loading="lazy"
-                      className="h-[18px] w-[18px]"
-                    />
-                    <span>{formatTypeName(row.attacking_type)}</span>
+                    <TypeBadgeIcon type={row.attacking_type} showLabel />
                   </div>
                 </td>
                 <td className="px-2 py-2 text-rose-700">{row.weak}</td>

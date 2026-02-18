@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { searchPokemon } from "@/lib/api";
+import TypeBadgeIcon from "@/components/TypeBadgeIcon";
 import { formatPokemonName } from "@/lib/format";
 import { PokemonBasic } from "@/lib/types";
 
@@ -65,7 +66,11 @@ export default function SearchBar({ canAdd, onSelect }: SearchBarProps) {
                   disabled={!canAdd}
                 >
                   <span className="min-w-0 text-sm font-medium text-slate-900">{formatPokemonName(pokemon.name)}</span>
-                  <span className="text-xs uppercase text-slate-500 sm:shrink-0">{pokemon.types.join(" / ")}</span>
+                  <span className="flex flex-wrap gap-1 sm:shrink-0">
+                    {pokemon.types.map((type) => (
+                      <TypeBadgeIcon key={`${pokemon.id}-${type}`} type={type} compact />
+                    ))}
+                  </span>
                 </button>
               ))
             : null}

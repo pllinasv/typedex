@@ -1,4 +1,5 @@
 import Image from "next/image";
+import TypeBadgeIcon from "@/components/TypeBadgeIcon";
 import { formatPokemonName } from "@/lib/format";
 import { SuggestionRow } from "@/lib/types";
 
@@ -31,9 +32,7 @@ export default function TeamSuggestions({ focusStat, suggestions }: TeamSuggesti
               </p>
               <div className="mt-1 flex flex-wrap gap-1">
                 {item.pokemon.types.map((type) => (
-                  <span key={`${item.pokemon.id}-${type}`} className="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase text-slate-700">
-                    {type}
-                  </span>
+                  <TypeBadgeIcon key={`${item.pokemon.id}-${type}`} type={type} compact />
                 ))}
               </div>
             </div>

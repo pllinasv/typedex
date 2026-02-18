@@ -197,6 +197,10 @@ export default function Home() {
     }
   };
 
+  const handleClearTeam = () => {
+    setTeam(EMPTY_TEAM);
+  };
+
   return (
     <main className="mx-auto min-h-screen max-w-7xl p-4 sm:p-6">
       <div className="retro-shell">
@@ -205,13 +209,22 @@ export default function Home() {
           <h1 className="retro-title text-xl sm:text-2xl">Pokemon Team Builder</h1>
           <p className="retro-subtext mt-2 text-xl">{selectedCount}/6 selected</p>
         </div>
-        <button
-          type="button"
-          onClick={handleShare}
-          className="retro-button w-full px-4 py-2 text-lg sm:w-auto"
-        >
-          Share
-        </button>
+        <div className="flex w-full gap-2 sm:w-auto">
+          <button
+            type="button"
+            onClick={handleClearTeam}
+            className="retro-button w-full px-4 py-2 text-lg sm:w-auto"
+          >
+            Clear Team
+          </button>
+          <button
+            type="button"
+            onClick={handleShare}
+            className="retro-button w-full px-4 py-2 text-lg sm:w-auto"
+          >
+            Share
+          </button>
+        </div>
       </header>
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
         <section>

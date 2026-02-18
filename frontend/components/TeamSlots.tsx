@@ -26,19 +26,40 @@ export default function TeamSlots({ team, onRemove }: TeamSlotsProps) {
             )}
             <div className="min-w-0 flex-1">
               <p className="retro-text text-2xl">{pokemon ? formatPokemonName(pokemon.name) : "Empty slot"}</p>
-              {pokemon?.stats ? (
-                <div className="retro-subtext mt-1 grid grid-cols-4 gap-x-2 gap-y-1 text-base">
-                  <span>HP {pokemon.stats.hp}</span>
-                  <span>Atk {pokemon.stats.attack}</span>
-                  <span>Def {pokemon.stats.defense}</span>
-                  <span>SpA {pokemon.stats.special_attack}</span>
-                  <span>SpD {pokemon.stats.special_defense}</span>
-                  <span>Spe {pokemon.stats.speed}</span>
-                  <span className="col-span-2">BST {pokemon.stats.total}</span>
-                </div>
-              ) : null}
             </div>
           </div>
+          {pokemon?.stats ? (
+            <div className="grid grid-cols-3 gap-1.5">
+              <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <p className="retro-subtext text-sm leading-none">HP</p>
+                <p className="retro-text text-lg leading-none">{pokemon.stats.hp}</p>
+              </div>
+              <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <p className="retro-subtext text-sm leading-none">ATK</p>
+                <p className="retro-text text-lg leading-none">{pokemon.stats.attack}</p>
+              </div>
+              <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <p className="retro-subtext text-sm leading-none">DEF</p>
+                <p className="retro-text text-lg leading-none">{pokemon.stats.defense}</p>
+              </div>
+              <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <p className="retro-subtext text-sm leading-none">SPA</p>
+                <p className="retro-text text-lg leading-none">{pokemon.stats.special_attack}</p>
+              </div>
+              <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <p className="retro-subtext text-sm leading-none">SPD</p>
+                <p className="retro-text text-lg leading-none">{pokemon.stats.special_defense}</p>
+              </div>
+              <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <p className="retro-subtext text-sm leading-none">SPE</p>
+                <p className="retro-text text-lg leading-none">{pokemon.stats.speed}</p>
+              </div>
+              <div className="col-span-3 border-2 border-[#2a3817] bg-[#dceea9] px-2 py-1 text-center">
+                <p className="retro-subtext text-sm leading-none">BST</p>
+                <p className="retro-text text-xl leading-none">{pokemon.stats.total}</p>
+              </div>
+            </div>
+          ) : null}
           <div className="flex min-h-7 items-end justify-between gap-3">
             <div className="flex flex-wrap gap-2">
               {pokemon?.types?.map((type) => (

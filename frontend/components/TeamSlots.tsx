@@ -34,7 +34,7 @@ export default function TeamSlots({ team, onRemove }: TeamSlotsProps) {
                 <p className="retro-text text-2xl">{pokemon ? formatPokemonName(pokemon.name) : "Empty slot"}</p>
               </div>
             </div>
-            <div className="flex min-h-7 items-end justify-between gap-3">
+            <div className="flex min-h-7 items-start justify-between gap-3">
               <div className="flex flex-wrap gap-2">
                 {pokemon?.types?.map((type) => (
                   <TypeBadgeIcon key={type} type={type} />

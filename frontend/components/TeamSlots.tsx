@@ -12,7 +12,7 @@ export default function TeamSlots({ team, onRemove }: TeamSlotsProps) {
       {team.map((pokemon, index) => (
         <article
           key={index}
-          className="flex min-h-36 items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+          className="flex min-h-36 flex-col items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center"
         >
           {pokemon?.sprite ? (
             <Image src={pokemon.sprite} alt={pokemon.name} width={72} height={72} className="h-[72px] w-[72px]" />
@@ -31,14 +31,16 @@ export default function TeamSlots({ team, onRemove }: TeamSlotsProps) {
               ))}
             </div>
           </div>
-          <button
-            type="button"
-            disabled={!pokemon}
-            onClick={() => onRemove(index)}
-            className="rounded-md border border-slate-300 px-2 py-1 text-xs font-medium text-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            Remove
-          </button>
+          <div className="flex w-full justify-end sm:w-auto">
+            <button
+              type="button"
+              disabled={!pokemon}
+              onClick={() => onRemove(index)}
+              className="shrink-0 rounded-md border border-slate-300 px-2 py-1 text-xs font-medium text-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Remove
+            </button>
+          </div>
         </article>
       ))}
     </section>

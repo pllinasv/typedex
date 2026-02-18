@@ -134,7 +134,7 @@ export default function Home() {
 
   return (
     <main className="mx-auto min-h-screen max-w-7xl p-6">
-      <header className="mb-6 flex items-start justify-between gap-3">
+      <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-slate-900">Pokemon Team Builder</h1>
           <p className="mt-1 text-sm text-slate-600">{selectedCount}/6 selected</p>
@@ -142,7 +142,7 @@ export default function Home() {
         <button
           type="button"
           onClick={handleShare}
-          className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+          className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 sm:w-auto"
         >
           Share
         </button>

@@ -4,7 +4,7 @@ type AnalysisTableProps = {
   rows: TypeCoverageRow[];
 };
 
-const TYPE_ICON_BASE_URL = "https://raw.githubusercontent.com/duiker101/pokemon-type-svg-icons/master/icons";
+const TYPE_ICON_BASE_URL = "https://play.pokemonshowdown.com/sprites/types";
 
 const formatTypeName = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
 
@@ -29,7 +29,7 @@ export default function AnalysisTable({ rows }: AnalysisTableProps) {
                 <td className="px-2 py-2 font-medium text-slate-900">
                   <div className="flex items-center gap-2">
                     <img
-                      src={`${TYPE_ICON_BASE_URL}/${row.attacking_type}.svg`}
+                      src={`${TYPE_ICON_BASE_URL}/${formatTypeName(row.attacking_type)}.png`}
                       alt={row.attacking_type}
                       width={18}
                       height={18}

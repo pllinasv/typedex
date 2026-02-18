@@ -30,7 +30,7 @@ export default function TeamStatsSummary({ focusStat, teamSize, averages }: Team
           return (
             <div
               key={item.key}
-              className={isWeakest ? "border-4 border-[#8c2b2b] bg-[#f6d6d6] px-2 py-2 text-center" : "border-2 border-[#2a3817] bg-[#f4fadf] px-2 py-2 text-center"}
+              className={isWeakest ? "retro-highlight px-2 py-2 text-center" : "retro-card px-2 py-2 text-center"}
             >
               <p className="retro-subtext text-sm leading-none">{item.label}</p>
               <p className="retro-text mt-1 text-xl leading-none">{Math.round(averages[item.key])}</p>

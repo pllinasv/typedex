@@ -9,6 +9,7 @@ import TeamSuggestions from "@/components/TeamSuggestions";
 import { analyzeTeam, searchPokemon, suggestTeam } from "@/lib/api";
 import { PokemonBasic, SuggestionRow, TeamAverages, TypeCoverageRow } from "@/lib/types";
 import { getPresetRegions, normalizeRegionPreset, normalizeRegions, REGION_OPTIONS, REGION_PRESETS, RegionKey } from "@/lib/regions";
+import { normalizeTheme, THEME_OPTIONS, ThemeKey } from "@/lib/themes";
 
 const ATTACKING_TYPES = [
   "normal",
@@ -62,6 +63,7 @@ export default function Home() {
   const [teamAverages, setTeamAverages] = useState<TeamAverages>(EMPTY_AVERAGES);
   const [regions, setRegions] = useState<RegionKey[]>([]);
   const [regionPreset, setRegionPreset] = useState("custom");
+  const [theme, setTheme] = useState<ThemeKey>("kanto-green");
   const [isHydratedFromQuery, setIsHydratedFromQuery] = useState(false);
   const selectedCount = useMemo(() => team.filter(Boolean).length, [team]);
 
@@ -70,7 +72,11 @@ export default function Home() {
       const params = new URLSearchParams(window.location.search);
       const teamParam = params.get("team");
       const regionsParam = params.get("regions");
+      const themeParam = params.get("theme");
       const presetParam = normalizeRegionPreset(params.get("preset"));
+      const storedTheme = typeof window !== "undefined" ? window.localStorage.getItem("typedex-theme") : null;
+      const nextTheme = normalizeTheme(themeParam ?? storedTheme);
+      setTheme(nextTheme);
       setRegionPreset(presetParam);
       const selectedRegions = presetParam !== "custom" ? getPresetRegions(presetParam) : (regionsParam ? fromRegionsQuery(regionsParam) : []);
       setRegions(selectedRegions);
@@ -108,6 +114,7 @@ export default function Home() {
     const params = new URLSearchParams(window.location.search);
     params.set("team", toTeamQuery(team));
     params.set("preset", regionPreset);
+    params.set("theme", theme);
     if (regions.length > 0) {
       params.set("regions", regions.join(","));
     } else {
@@ -115,7 +122,12 @@ export default function Home() {
     }
     const nextUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.replaceState({}, "", nextUrl);
-  }, [isHydratedFromQuery, team, regions, regionPreset]);
+  }, [isHydratedFromQuery, team, regions, regionPreset, theme]);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    window.localStorage.setItem("typedex-theme", theme);
+  }, [theme]);
 
   useEffect(() => {
     const names = team.filter((item): item is PokemonBasic => item !== null).map((item) => item.name);
@@ -209,6 +221,23 @@ export default function Home() {
           <h1 className="retro-title text-xl sm:text-2xl">Pokemon Team Builder</h1>
           <p className="retro-subtext mt-2 text-xl">{selectedCount}/6 selected</p>
         </div>
+        <div className="w-full sm:w-72">
+          <label className="retro-subtext block text-base" htmlFor="theme-select">
+            Theme
+          </label>
+          <select
+            id="theme-select"
+            value={theme}
+            onChange={(event) => setTheme(normalizeTheme(event.target.value))}
+            className="retro-input mt-1 w-full px-3 py-2 text-base"
+          >
+            {THEME_OPTIONS.map((option) => (
+              <option key={option.key} value={option.key}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className="flex w-full gap-2 sm:w-auto">
           <button
             type="button"
@@ -256,7 +285,7 @@ export default function Home() {
                     onClick={() => handleToggleRegion(region.key)}
                     className={
                       isActive
-                        ? "retro-button translate-y-[1px] bg-[#7ea83e] shadow-[2px_2px_0_#223212] px-3 py-1 text-base"
+                        ? "retro-button retro-button-pressed px-3 py-1 text-base"
                         : "retro-button px-3 py-1 text-base"
                     }
                   >

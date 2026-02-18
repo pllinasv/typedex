@@ -28,9 +28,9 @@ export default function AnalysisTable({ rows }: AnalysisTableProps) {
                     <TypeBadgeIcon type={row.attacking_type} showLabel fixedWidth />
                   </div>
                 </td>
-                <td className="px-2 py-2 text-[#902e2e]">{row.weak}</td>
-                <td className="px-2 py-2 text-[#2a6f2f]">{row.resist}</td>
-                <td className="px-2 py-2 text-[#245f8a]">{row.immune}</td>
+                <td className="retro-metric-weak px-2 py-2">{row.weak}</td>
+                <td className="retro-metric-resist px-2 py-2">{row.resist}</td>
+                <td className="retro-metric-immune px-2 py-2">{row.immune}</td>
                 <td className="px-2 py-2 retro-subtext">{row.neutral}</td>
               </tr>
             ))}

@@ -64,14 +64,14 @@ export default function SearchBar({ canAdd, regions, onSelect }: SearchBarProps)
                   key={pokemon.id}
                   type="button"
                   onClick={() => handleSelect(pokemon)}
-                  className="flex w-full items-center justify-between gap-3 border-b-2 border-[#9bbd64] px-4 py-3 text-left last:border-b-0 hover:bg-[#f2fad8] disabled:cursor-not-allowed"
+                  className="retro-search-item flex w-full items-center justify-between gap-3 px-4 py-3 text-left last:border-b-0 disabled:cursor-not-allowed"
                   disabled={!canAdd}
                 >
                   <span className="flex min-w-0 items-center gap-3">
                     {pokemon.sprite ? (
                       <img src={pokemon.sprite} alt={pokemon.name} width={40} height={40} loading="lazy" className="h-10 w-10 shrink-0" />
                     ) : (
-                      <span className="h-10 w-10 shrink-0 rounded-sm border-2 border-[#2a3817] bg-[#dceea9]" />
+                      <span className="retro-card-strong h-10 w-10 shrink-0 rounded-sm" />
                     )}
                     <span className="retro-text min-w-0 text-lg">{formatPokemonName(pokemon.name)}</span>
                   </span>

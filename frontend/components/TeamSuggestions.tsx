@@ -24,11 +24,11 @@ export default function TeamSuggestions({ focusStat, suggestions, canAdd, onAdd 
       </p>
       <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
         {suggestions.map((item) => (
-          <article key={item.pokemon.id} className="flex items-center gap-3 border-4 border-[#2a3817] bg-[#f1f9d7] px-3 py-2">
+          <article key={item.pokemon.id} className="retro-card flex items-center gap-3 border-4 px-3 py-2">
             {item.pokemon.sprite ? (
               <Image src={item.pokemon.sprite} alt={item.pokemon.name} width={56} height={56} className="h-14 w-14" />
             ) : (
-              <div className="h-14 w-14 border-2 border-[#2a3817] bg-[#dceea9]" />
+              <div className="retro-card-strong h-14 w-14" />
             )}
             <div className="min-w-0 flex-1">
               <p className="retro-text truncate text-xl">{formatPokemonName(item.pokemon.name)}</p>
@@ -74,7 +74,7 @@ export default function TeamSuggestions({ focusStat, suggestions, canAdd, onAdd 
               {selectedPokemon.sprite ? (
                 <Image src={selectedPokemon.sprite} alt={selectedPokemon.name} width={208} height={208} className="h-52 w-52" />
               ) : (
-                <div className="h-52 w-52 border-4 border-[#2a3817] bg-[#dceea9]" />
+                <div className="retro-card-strong h-52 w-52 border-4" />
               )}
             </div>
             <div className="mb-3 flex flex-wrap justify-center gap-2">
@@ -84,31 +84,31 @@ export default function TeamSuggestions({ focusStat, suggestions, canAdd, onAdd 
             </div>
             {selectedPokemon.stats ? (
               <div className="grid grid-cols-3 gap-1.5">
-                <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <div className="retro-card px-1 py-1 text-center">
                   <p className="retro-subtext text-sm leading-none">HP</p>
                   <p className="retro-text text-lg leading-none">{selectedPokemon.stats.hp}</p>
                 </div>
-                <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <div className="retro-card px-1 py-1 text-center">
                   <p className="retro-subtext text-sm leading-none">ATK</p>
                   <p className="retro-text text-lg leading-none">{selectedPokemon.stats.attack}</p>
                 </div>
-                <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <div className="retro-card px-1 py-1 text-center">
                   <p className="retro-subtext text-sm leading-none">DEF</p>
                   <p className="retro-text text-lg leading-none">{selectedPokemon.stats.defense}</p>
                 </div>
-                <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <div className="retro-card px-1 py-1 text-center">
                   <p className="retro-subtext text-sm leading-none">SPA</p>
                   <p className="retro-text text-lg leading-none">{selectedPokemon.stats.special_attack}</p>
                 </div>
-                <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <div className="retro-card px-1 py-1 text-center">
                   <p className="retro-subtext text-sm leading-none">SPD</p>
                   <p className="retro-text text-lg leading-none">{selectedPokemon.stats.special_defense}</p>
                 </div>
-                <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <div className="retro-card px-1 py-1 text-center">
                   <p className="retro-subtext text-sm leading-none">SPE</p>
                   <p className="retro-text text-lg leading-none">{selectedPokemon.stats.speed}</p>
                 </div>
-                <div className="col-span-3 border-4 border-[#8c2b2b] bg-[#f6d6d6] px-1 py-1 text-center">
+                <div className="retro-highlight col-span-3 px-1 py-1 text-center">
                   <p className="retro-subtext text-sm leading-none">TOTAL</p>
                   <p className="retro-text text-xl leading-none">{selectedPokemon.stats.total}</p>
                 </div>

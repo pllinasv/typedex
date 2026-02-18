@@ -12,8 +12,8 @@ const formatTypeName = (value: string) => value.charAt(0).toUpperCase() + value.
 export default function TypeBadgeIcon({ type, showLabel = false, compact = false, fixedWidth = false }: TypeBadgeIconProps) {
   const label = formatTypeName(type);
   const containerClass = compact
-    ? "inline-flex items-center border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-0.5"
-    : "inline-flex items-center gap-1 border-2 border-[#2a3817] bg-[#f4fadf] px-1.5 py-1";
+    ? "retro-chip px-1 py-0.5"
+    : "retro-chip gap-1 px-1.5 py-1";
   const widthClass = fixedWidth ? "w-[108px] justify-between" : "";
   return (
     <span className={`${containerClass} ${widthClass}`.trim()}>
@@ -25,7 +25,7 @@ export default function TypeBadgeIcon({ type, showLabel = false, compact = false
         loading="lazy"
         className={compact ? "h-3 w-8" : "h-3.5 w-10"}
       />
-      {showLabel ? <span className="text-base text-[#1f2d12]">{label}</span> : null}
+      {showLabel ? <span className="retro-text text-base">{label}</span> : null}
     </span>
   );
 }

@@ -26,7 +26,7 @@ export default function TeamSlots({ team, onRemove }: TeamSlotsProps) {
               {pokemon?.sprite ? (
                 <Image src={pokemon.sprite} alt={pokemon.name} width={72} height={72} className="h-[72px] w-[72px]" />
               ) : (
-                <div className="flex h-[72px] w-[72px] items-center justify-center border-4 border-[#2a3817] bg-[#dceea9] text-2xl text-[#2a3817]">
+                <div className="retro-card-strong flex h-[72px] w-[72px] items-center justify-center text-2xl">
                   {index + 1}
                 </div>
               )}
@@ -76,7 +76,7 @@ export default function TeamSlots({ team, onRemove }: TeamSlotsProps) {
               {selectedPokemon.sprite ? (
                 <Image src={selectedPokemon.sprite} alt={selectedPokemon.name} width={208} height={208} className="h-52 w-52" />
               ) : (
-                <div className="h-52 w-52 border-4 border-[#2a3817] bg-[#dceea9]" />
+                <div className="retro-card-strong h-52 w-52 border-4" />
               )}
             </div>
             <div className="mb-3 flex flex-wrap justify-center gap-2">
@@ -86,31 +86,31 @@ export default function TeamSlots({ team, onRemove }: TeamSlotsProps) {
             </div>
             {selectedPokemon.stats ? (
               <div className="grid grid-cols-3 gap-1.5">
-                <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <div className="retro-card px-1 py-1 text-center">
                   <p className="retro-subtext text-sm leading-none">HP</p>
                   <p className="retro-text text-lg leading-none">{selectedPokemon.stats.hp}</p>
                 </div>
-                <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <div className="retro-card px-1 py-1 text-center">
                   <p className="retro-subtext text-sm leading-none">ATK</p>
                   <p className="retro-text text-lg leading-none">{selectedPokemon.stats.attack}</p>
                 </div>
-                <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <div className="retro-card px-1 py-1 text-center">
                   <p className="retro-subtext text-sm leading-none">DEF</p>
                   <p className="retro-text text-lg leading-none">{selectedPokemon.stats.defense}</p>
                 </div>
-                <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <div className="retro-card px-1 py-1 text-center">
                   <p className="retro-subtext text-sm leading-none">SPA</p>
                   <p className="retro-text text-lg leading-none">{selectedPokemon.stats.special_attack}</p>
                 </div>
-                <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <div className="retro-card px-1 py-1 text-center">
                   <p className="retro-subtext text-sm leading-none">SPD</p>
                   <p className="retro-text text-lg leading-none">{selectedPokemon.stats.special_defense}</p>
                 </div>
-                <div className="border-2 border-[#2a3817] bg-[#f4fadf] px-1 py-1 text-center">
+                <div className="retro-card px-1 py-1 text-center">
                   <p className="retro-subtext text-sm leading-none">SPE</p>
                   <p className="retro-text text-lg leading-none">{selectedPokemon.stats.speed}</p>
                 </div>
-                <div className="col-span-3 border-2 border-[#2a3817] bg-[#dceea9] px-2 py-1 text-center">
+                <div className="retro-card-strong col-span-3 px-2 py-1 text-center">
                   <p className="retro-subtext text-sm leading-none">BST</p>
                   <p className="retro-text text-xl leading-none">{selectedPokemon.stats.total}</p>
                 </div>

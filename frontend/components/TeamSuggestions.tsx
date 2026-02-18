@@ -29,7 +29,13 @@ export default function TeamSuggestions({ focusStat, suggestions }: TeamSuggesti
               <p className="text-xs text-slate-600">
                 {formatStatLabel(item.highlight_stat)}: {item.highlight_value} | Total: {item.total}
               </p>
-              <p className="truncate text-xs uppercase text-slate-500">{item.pokemon.types.join(" / ")}</p>
+              <div className="mt-1 flex flex-wrap gap-1">
+                {item.pokemon.types.map((type) => (
+                  <span key={`${item.pokemon.id}-${type}`} className="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase text-slate-700">
+                    {type}
+                  </span>
+                ))}
+              </div>
             </div>
           </article>
         ))}

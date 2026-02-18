@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const isGithubActions = process.env.GITHUB_ACTIONS === "true";
+const isGithubActions = process.env.GITHUB_ACTIONS === "true" && process.env.NODE_ENV === "production";
 const repositoryName = process.env.GITHUB_REPOSITORY?.split("/")[1] ?? "";
 const basePath = isGithubActions && repositoryName ? `/${repositoryName}` : "";
 

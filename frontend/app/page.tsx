@@ -8,6 +8,7 @@ import TeamStatsSummary from "@/components/TeamStatsSummary";
 import TeamSuggestions from "@/components/TeamSuggestions";
 import { analyzeTeam, searchPokemon, suggestTeam } from "@/lib/api";
 import { PokemonBasic, SuggestionRow, TeamAverages, TypeCoverageRow } from "@/lib/types";
+import { getAudioPercent, getAudioVolume, setAudioVolume as persistAudioVolume } from "@/lib/audioSettings";
 import { playCatchEmAllSound } from "@/lib/easterEgg";
 import { getPresetRegions, normalizeRegionPreset, normalizeRegions, REGION_OPTIONS, REGION_PRESETS, RegionKey } from "@/lib/regions";
 import { normalizeTheme, THEME_OPTIONS, ThemeKey } from "@/lib/themes";
@@ -66,6 +67,7 @@ export default function Home() {
   const [regionPreset, setRegionPreset] = useState("custom");
   const [theme, setTheme] = useState<ThemeKey>("kanto-green");
   const [showCatchToast, setShowCatchToast] = useState(false);
+  const [audioVolume, setAudioVolumeState] = useState(1);
   const [isHydratedFromQuery, setIsHydratedFromQuery] = useState(false);
   const statsRequestId = useRef(0);
   const catchToastTimeoutRef = useRef<number | null>(null);
@@ -80,6 +82,7 @@ export default function Home() {
       const presetParam = normalizeRegionPreset(params.get("preset"));
       const storedTheme = typeof window !== "undefined" ? window.localStorage.getItem("typedex-theme") : null;
       const nextTheme = normalizeTheme(themeParam ?? storedTheme);
+      setAudioVolumeState(getAudioVolume());
       setTheme(nextTheme);
       setRegionPreset(presetParam);
       const selectedRegions = presetParam !== "custom" ? getPresetRegions(presetParam) : (regionsParam ? fromRegionsQuery(regionsParam) : []);
@@ -240,6 +243,11 @@ export default function Home() {
     setTeam(EMPTY_TEAM);
   };
 
+  const handleAudioChange = (rawValue: string) => {
+    const next = Number(rawValue) / 100;
+    setAudioVolumeState(persistAudioVolume(next));
+  };
+
   return (
     <main className="mx-auto min-h-screen max-w-7xl p-4 sm:p-6">
       <div className="retro-shell">
@@ -275,21 +283,38 @@ export default function Home() {
             ))}
           </select>
         </div>
-        <div className="flex w-full gap-2 sm:w-auto">
-          <button
-            type="button"
-            onClick={handleClearTeam}
-            className="retro-button w-full px-4 py-2 text-lg sm:w-auto"
-          >
-            Clear Team
-          </button>
-          <button
-            type="button"
-            onClick={handleShare}
-            className="retro-button w-full px-4 py-2 text-lg sm:w-auto"
-          >
-            Share
-          </button>
+        <div className="flex w-full flex-col gap-2 sm:ml-auto sm:w-[308px]">
+          <div className="retro-input flex items-center gap-2 px-2 py-1">
+            <label htmlFor="audio-volume" className="retro-subtext text-sm">
+              Audio
+            </label>
+            <input
+              id="audio-volume"
+              type="range"
+              min={0}
+              max={100}
+              value={getAudioPercent(audioVolume)}
+              onChange={(event) => handleAudioChange(event.target.value)}
+              className="w-40 sm:w-52"
+            />
+            <span className="retro-subtext w-10 text-right text-sm">{getAudioPercent(audioVolume)}%</span>
+          </div>
+          <div className="flex w-full gap-2 sm:justify-end">
+            <button
+              type="button"
+              onClick={handleClearTeam}
+              className="retro-button w-full px-4 py-2 text-lg sm:w-[150px]"
+            >
+              Clear Team
+            </button>
+            <button
+              type="button"
+              onClick={handleShare}
+              className="retro-button w-full px-4 py-2 text-lg sm:w-[150px]"
+            >
+              Share
+            </button>
+          </div>
         </div>
       </header>
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
@@ -342,7 +367,7 @@ export default function Home() {
       {showCatchToast ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
           <div className="retro-toast">
-            <p className="retro-toast-text text-base sm:text-lg">CATCH EM ALL!</p>
+            <p className="retro-toast-text text-base sm:text-lg">GOTTA CATCH 'EM ALL!</p>
           </div>
         </div>
       ) : null}

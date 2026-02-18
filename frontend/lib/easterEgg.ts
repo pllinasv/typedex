@@ -1,3 +1,5 @@
+import { getAudioVolume } from "@/lib/audioSettings";
+
 export function playCatchEmAllSound(): void {
   if (typeof window === "undefined") {
     return;
@@ -6,10 +8,14 @@ export function playCatchEmAllSound(): void {
   if (!AudioCtx) {
     return;
   }
+  const volume = getAudioVolume();
+  if (volume <= 0) {
+    return;
+  }
   const ctx = new AudioCtx();
   const now = ctx.currentTime;
   const master = ctx.createGain();
-  master.gain.setValueAtTime(0.08, now);
+  master.gain.setValueAtTime(0.08 * volume, now);
   master.connect(ctx.destination);
 
   const notes: Array<{ hz: number; start: number; duration: number }> = [

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import AnalysisTable from "@/components/AnalysisTable";
 import SearchBar from "@/components/SearchBar";
 import TeamSlots from "@/components/TeamSlots";
@@ -65,6 +65,7 @@ export default function Home() {
   const [regionPreset, setRegionPreset] = useState("custom");
   const [theme, setTheme] = useState<ThemeKey>("kanto-green");
   const [isHydratedFromQuery, setIsHydratedFromQuery] = useState(false);
+  const statsRequestId = useRef(0);
   const selectedCount = useMemo(() => team.filter(Boolean).length, [team]);
 
   useEffect(() => {
@@ -131,37 +132,51 @@ export default function Home() {
 
   useEffect(() => {
     const names = team.filter((item): item is PokemonBasic => item !== null).map((item) => item.name);
+    const requestId = statsRequestId.current + 1;
+    statsRequestId.current = requestId;
     const runAnalyze = async () => {
       if (names.length === 0) {
-        setCoverage(EMPTY_COVERAGE);
+        if (statsRequestId.current === requestId) {
+          setCoverage(EMPTY_COVERAGE);
+        }
         return;
       }
       try {
         const data = await analyzeTeam(names);
-        setCoverage(data.coverage);
+        if (statsRequestId.current === requestId) {
+          setCoverage(data.coverage);
+        }
       } catch {
-        setCoverage(EMPTY_COVERAGE);
+        if (statsRequestId.current === requestId) {
+          setCoverage(EMPTY_COVERAGE);
+        }
       }
     };
     const runSuggestions = async () => {
       if (names.length === 0) {
-        setFocusStat("attack");
-        setTeamSize(0);
-        setTeamAverages(EMPTY_AVERAGES);
-        setSuggestions([]);
+        if (statsRequestId.current === requestId) {
+          setFocusStat("attack");
+          setTeamSize(0);
+          setTeamAverages(EMPTY_AVERAGES);
+          setSuggestions([]);
+        }
         return;
       }
       try {
         const data = await suggestTeam(names, regions);
-        setFocusStat(data.focus_stat);
-        setTeamSize(data.team_size);
-        setTeamAverages(data.team_averages);
-        setSuggestions(data.suggestions);
+        if (statsRequestId.current === requestId) {
+          setFocusStat(data.focus_stat);
+          setTeamSize(data.team_size);
+          setTeamAverages(data.team_averages);
+          setSuggestions(data.suggestions);
+        }
       } catch {
-        setFocusStat("attack");
-        setTeamSize(0);
-        setTeamAverages(EMPTY_AVERAGES);
-        setSuggestions([]);
+        if (statsRequestId.current === requestId) {
+          setFocusStat("attack");
+          setTeamSize(0);
+          setTeamAverages(EMPTY_AVERAGES);
+          setSuggestions([]);
+        }
       }
     };
     runAnalyze();

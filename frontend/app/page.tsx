@@ -4,9 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import AnalysisTable from "@/components/AnalysisTable";
 import SearchBar from "@/components/SearchBar";
 import TeamSlots from "@/components/TeamSlots";
+import TeamStatsSummary from "@/components/TeamStatsSummary";
 import TeamSuggestions from "@/components/TeamSuggestions";
 import { analyzeTeam, searchPokemon, suggestTeam } from "@/lib/api";
-import { PokemonBasic, SuggestionRow, TypeCoverageRow } from "@/lib/types";
+import { PokemonBasic, SuggestionRow, TeamAverages, TypeCoverageRow } from "@/lib/types";
 
 const ATTACKING_TYPES = [
   "normal",
@@ -37,6 +38,14 @@ const EMPTY_COVERAGE: TypeCoverageRow[] = ATTACKING_TYPES.map((attacking_type) =
   immune: 0,
   neutral: 0
 }));
+const EMPTY_AVERAGES: TeamAverages = {
+  hp: 0,
+  attack: 0,
+  defense: 0,
+  special_attack: 0,
+  special_defense: 0,
+  speed: 0
+};
 
 const toTeamQuery = (team: Array<PokemonBasic | null>) => team.map((pokemon) => pokemon?.name ?? "").join(",");
 
@@ -47,6 +56,8 @@ export default function Home() {
   const [coverage, setCoverage] = useState<TypeCoverageRow[]>(EMPTY_COVERAGE);
   const [focusStat, setFocusStat] = useState("attack");
   const [suggestions, setSuggestions] = useState<SuggestionRow[]>([]);
+  const [teamSize, setTeamSize] = useState(0);
+  const [teamAverages, setTeamAverages] = useState<TeamAverages>(EMPTY_AVERAGES);
   const [isHydratedFromQuery, setIsHydratedFromQuery] = useState(false);
   const selectedCount = useMemo(() => team.filter(Boolean).length, [team]);
 
@@ -108,15 +119,21 @@ export default function Home() {
     const runSuggestions = async () => {
       if (names.length === 0) {
         setFocusStat("attack");
+        setTeamSize(0);
+        setTeamAverages(EMPTY_AVERAGES);
         setSuggestions([]);
         return;
       }
       try {
         const data = await suggestTeam(names);
         setFocusStat(data.focus_stat);
+        setTeamSize(data.team_size);
+        setTeamAverages(data.team_averages);
         setSuggestions(data.suggestions);
       } catch {
         setFocusStat("attack");
+        setTeamSize(0);
+        setTeamAverages(EMPTY_AVERAGES);
         setSuggestions([]);
       }
     };
@@ -170,6 +187,7 @@ export default function Home() {
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
         <section>
           <SearchBar canAdd={selectedCount < 6} onSelect={handleAdd} />
+          <TeamStatsSummary focusStat={focusStat} teamSize={teamSize} averages={teamAverages} />
           <TeamSlots team={team} onRemove={handleRemove} />
           <TeamSuggestions focusStat={focusStat} suggestions={suggestions} canAdd={selectedCount < 6} onAdd={handleAdd} />
         </section>

@@ -2,6 +2,7 @@ import asyncio
 
 import httpx
 
+from app.regions import is_in_regions, normalize_regions
 from app.schemas import PokemonBasic, PokemonStats, SuggestionRow, SuggestionsResponse, TeamAverages
 
 
@@ -133,15 +134,28 @@ class PokeAPIService:
             self._details[key] = parsed
             return parsed
 
-    async def search(self, query: str, limit: int = 10) -> list[PokemonBasic]:
+    async def search(self, query: str, limit: int = 10, regions: list[str] | None = None) -> list[PokemonBasic]:
         clean_query = query.strip().lower()
         if not clean_query:
             return []
+        normalized_regions = normalize_regions(regions)
         names = await self._load_names()
-        matched = [name for name in names if clean_query in name][: max(1, min(limit, 20))]
+        matched = [name for name in names if clean_query in name]
         if not matched:
             return []
-        return await asyncio.gather(*(self._load_detail(name) for name in matched))
+        max_results = max(1, min(limit, 20))
+        max_scan = min(len(matched), max(120, max_results * 30))
+        results: list[PokemonBasic] = []
+        for name in matched[:max_scan]:
+            try:
+                detail = await self._load_detail(name)
+            except httpx.HTTPError:
+                continue
+            if is_in_regions(detail.id, normalized_regions):
+                results.append(detail)
+            if len(results) >= max_results:
+                break
+        return results
 
     async def get_team(self, names: list[str]) -> list[PokemonBasic]:
         team: list[PokemonBasic] = []
@@ -156,7 +170,8 @@ class PokeAPIService:
                 continue
         return team
 
-    async def suggest(self, names: list[str], limit: int = 6) -> SuggestionsResponse:
+    async def suggest(self, names: list[str], limit: int = 6, regions: list[str] | None = None) -> SuggestionsResponse:
+        normalized_regions = normalize_regions(regions)
         team = await self.get_team(names)
         team_size = len(team)
         if team_size == 0:
@@ -210,6 +225,8 @@ class PokeAPIService:
             try:
                 candidate = await self._load_detail(candidate_name)
                 if candidate.name in team_names:
+                    continue
+                if not is_in_regions(candidate.id, normalized_regions):
                     continue
                 candidates.append(candidate)
             except httpx.HTTPError:

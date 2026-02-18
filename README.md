@@ -19,8 +19,9 @@ uvicorn app.main:app --reload --port 8000
 Endpoints:
 
 - `GET /health`
-- `GET /pokemon/search?q=<query>&limit=<1..20>`
+- `GET /pokemon/search?q=<query>&limit=<1..20>&regions=<kanto,johto,...>`
 - `POST /analyze` with body `{ "team": ["pikachu", "gengar"] }`
+- `POST /suggestions?limit=<1..12>` with body `{ "team": ["pikachu", "gengar"], "regions": ["kanto", "johto"] }`
 
 ## Frontend
 

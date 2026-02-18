@@ -3,13 +3,15 @@ import { searchPokemon } from "@/lib/api";
 import TypeBadgeIcon from "@/components/TypeBadgeIcon";
 import { formatPokemonName } from "@/lib/format";
 import { PokemonBasic } from "@/lib/types";
+import { RegionKey } from "@/lib/regions";
 
 type SearchBarProps = {
   canAdd: boolean;
+  regions: RegionKey[];
   onSelect: (pokemon: PokemonBasic) => void;
 };
 
-export default function SearchBar({ canAdd, onSelect }: SearchBarProps) {
+export default function SearchBar({ canAdd, regions, onSelect }: SearchBarProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<PokemonBasic[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +24,7 @@ export default function SearchBar({ canAdd, onSelect }: SearchBarProps) {
     const timeoutId = setTimeout(async () => {
       setIsLoading(true);
       try {
-        const data = await searchPokemon(query.trim());
+        const data = await searchPokemon(query.trim(), regions);
         setResults(data);
       } catch {
         setResults([]);
@@ -31,7 +33,7 @@ export default function SearchBar({ canAdd, onSelect }: SearchBarProps) {
       }
     }, 200);
     return () => clearTimeout(timeoutId);
-  }, [query]);
+  }, [query, regions]);
 
   const showResults = useMemo(() => query.trim().length >= 2, [query]);
 

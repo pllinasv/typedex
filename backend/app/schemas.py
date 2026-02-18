@@ -26,6 +26,7 @@ class SearchResponse(BaseModel):
 
 class AnalyzeRequest(BaseModel):
     team: list[str] = Field(default_factory=list, max_length=6)
+    regions: list[str] = Field(default_factory=list, max_length=9)
 
 
 class TypeCoverageRow(BaseModel):

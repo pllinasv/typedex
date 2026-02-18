@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.regions import normalize_regions
 from app.schemas import AnalyzeRequest, AnalyzeResponse, SearchResponse, SuggestionsResponse, TypeCoverageRow
 from app.services.pokeapi import PokeAPIService
 from app.services.typechart import ATTACKING_TYPES, multiplier
@@ -23,8 +24,13 @@ def health() -> dict[str, str]:
 
 
 @app.get("/pokemon/search", response_model=SearchResponse)
-async def search_pokemon(q: str = Query(default="", min_length=0), limit: int = Query(default=10, ge=1, le=20)) -> SearchResponse:
-    results = await pokeapi_service.search(q, limit)
+async def search_pokemon(
+    q: str = Query(default="", min_length=0),
+    limit: int = Query(default=10, ge=1, le=20),
+    regions: str | None = Query(default=None),
+) -> SearchResponse:
+    selected_regions = normalize_regions(regions.split(",") if regions else [])
+    results = await pokeapi_service.search(q, limit, selected_regions)
     return SearchResponse(query=q, results=results)
 
 
@@ -61,4 +67,4 @@ async def analyze_team(payload: AnalyzeRequest) -> AnalyzeResponse:
 
 @app.post("/suggestions", response_model=SuggestionsResponse)
 async def suggest_team(payload: AnalyzeRequest, limit: int = Query(default=6, ge=1, le=12)) -> SuggestionsResponse:
-    return await pokeapi_service.suggest(payload.team, limit)
+    return await pokeapi_service.suggest(payload.team, limit, payload.regions)

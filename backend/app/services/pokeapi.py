@@ -56,15 +56,14 @@ class PokeAPIService:
         return await asyncio.gather(*(self._load_detail(name) for name in matched))
 
     async def get_team(self, names: list[str]) -> list[PokemonBasic]:
-        clean_names = [name.strip().lower() for name in names if name.strip()]
-        unique_names: list[str] = []
-        seen: set[str] = set()
-        for name in clean_names:
-            if name in seen:
+        team: list[PokemonBasic] = []
+        for raw_name in names[:6]:
+            name = raw_name.strip().lower()
+            if not name:
                 continue
-            seen.add(name)
-            unique_names.append(name)
-        if not unique_names:
-            return []
-        team = await asyncio.gather(*(self._load_detail(name) for name in unique_names))
-        return team[:6]
+            try:
+                pokemon = await self._load_detail(name)
+                team.append(pokemon)
+            except httpx.HTTPError:
+                continue
+        return team

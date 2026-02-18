@@ -22,7 +22,7 @@ export default function TeamStatsSummary({ focusStat, teamSize, averages }: Team
     <section className="retro-panel mb-4 p-4">
       <h2 className="retro-title text-base">Team Stat Summary</h2>
       <p className="retro-subtext mt-2 text-xl">
-        Weakest: <span className="retro-text">{formatStatName(focusStat)}</span> | Team size: {teamSize}
+        Weakest: <span className="retro-text">{formatStatName(focusStat).toUpperCase()}</span> | Team size: {teamSize}
       </p>
       <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
         {STAT_ITEMS.map((item) => {

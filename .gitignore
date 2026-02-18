@@ -1,0 +1,61 @@
+# Monorepo ignores (backend + frontend)
+
+# OS / logs
+.DS_Store
+*.log
+
+# Env files
+.env
+.env.*
+*.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+.hypothesis/
+.coverage
+.coverage.*
+htmlcov/
+.venv/
+venv/
+env/
+ENV/
+.ipynb_checkpoints/
+
+# Backend specific
+backend/build/
+backend/dist/
+backend/*.egg-info/
+backend/.pdm.toml
+backend/instance/
+backend/.webassets-cache
+backend/db.sqlite3
+backend/db.sqlite3-journal
+
+# Node / Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/coverage/
+frontend/.pnpm-debug.log*
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.vercel/
+frontend/.eslintcache
+frontend/.stylelintcache
+frontend/.parcel-cache/
+frontend/.cache/
+frontend/.turbo/
+frontend/*.tsbuildinfo
+
+# Misc tooling
+.vscode-test/

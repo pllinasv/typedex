@@ -74,9 +74,9 @@ export default function TeamSlots({ team, onRemove }: TeamSlotsProps) {
             </div>
             <div className="mb-3 flex justify-center">
               {selectedPokemon.sprite ? (
-                <Image src={selectedPokemon.sprite} alt={selectedPokemon.name} width={160} height={160} className="h-40 w-40" />
+                <Image src={selectedPokemon.sprite} alt={selectedPokemon.name} width={208} height={208} className="h-52 w-52" />
               ) : (
-                <div className="h-40 w-40 border-4 border-[#2a3817] bg-[#dceea9]" />
+                <div className="h-52 w-52 border-4 border-[#2a3817] bg-[#dceea9]" />
               )}
             </div>
             <div className="mb-3 flex flex-wrap justify-center gap-2">

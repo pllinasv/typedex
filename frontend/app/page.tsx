@@ -152,16 +152,17 @@ export default function Home() {
   };
 
   return (
-    <main className="mx-auto min-h-screen max-w-7xl p-6">
+    <main className="mx-auto min-h-screen max-w-7xl p-4 sm:p-6">
+      <div className="retro-shell">
       <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Pokemon Team Builder</h1>
-          <p className="mt-1 text-sm text-slate-600">{selectedCount}/6 selected</p>
+          <h1 className="retro-title text-xl sm:text-2xl">Pokemon Team Builder</h1>
+          <p className="retro-subtext mt-2 text-xl">{selectedCount}/6 selected</p>
         </div>
         <button
           type="button"
           onClick={handleShare}
-          className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 sm:w-auto"
+          className="retro-button w-full px-4 py-2 text-lg sm:w-auto"
         >
           Share
         </button>
@@ -173,6 +174,7 @@ export default function Home() {
           <TeamSuggestions focusStat={focusStat} suggestions={suggestions} canAdd={selectedCount < 6} onAdd={handleAdd} />
         </section>
         <AnalysisTable rows={coverage} />
+      </div>
       </div>
     </main>
   );

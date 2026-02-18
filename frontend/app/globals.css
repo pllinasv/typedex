@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,7 +10,51 @@
 
 body {
   margin: 0;
-  background: #f8fafc;
-  color: #0f172a;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+  background:
+    linear-gradient(0deg, rgba(138, 173, 77, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(138, 173, 77, 0.14) 1px, transparent 1px),
+    radial-gradient(circle at top, #dff2a0 0%, #b8d57c 45%, #87ad58 100%);
+  background-size: 18px 18px, 18px 18px, 100% 100%;
+  color: #16200f;
+  font-family: "VT323", ui-monospace, Menlo, monospace;
+}
+
+@layer components {
+  .retro-shell {
+    @apply rounded-xl border-4 border-[#243016] bg-[#dceea9] shadow-[6px_6px_0_#243016] p-4;
+  }
+
+  .retro-panel {
+    @apply rounded-lg border-4 border-[#2a3817] bg-[#e9f4c3] shadow-[4px_4px_0_#2a3817];
+  }
+
+  .retro-title {
+    font-family: "Press Start 2P", ui-monospace, monospace;
+    letter-spacing: 0.03em;
+    @apply text-[#1c2810];
+  }
+
+  .retro-button {
+    @apply rounded-md border-4 border-[#223212] bg-[#9fcc4f] text-[#16200f] shadow-[3px_3px_0_#223212] transition hover:bg-[#b4df67] active:translate-y-[1px] active:shadow-[2px_2px_0_#223212] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .retro-input {
+    @apply rounded-md border-4 border-[#2a3817] bg-[#f4fadf] text-[#14200f] shadow-[3px_3px_0_#2a3817] outline-none transition focus:border-[#47672b];
+  }
+
+  .retro-text {
+    @apply text-[#1f2d12];
+  }
+
+  .retro-subtext {
+    @apply text-[#354d1e];
+  }
+
+  .retro-table-head {
+    @apply border-b-4 border-[#2a3817] text-[#2c3d19];
+  }
+
+  .retro-row {
+    @apply border-b-2 border-[#9bbd64];
+  }
 }

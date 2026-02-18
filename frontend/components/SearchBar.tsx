@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { searchPokemon } from "@/lib/api";
 import TypeBadgeIcon from "@/components/TypeBadgeIcon";
+import { playCatchEmAllSound } from "@/lib/easterEgg";
 import { formatPokemonName } from "@/lib/format";
 import { PokemonBasic } from "@/lib/types";
 import { RegionKey } from "@/lib/regions";
@@ -15,10 +16,16 @@ export default function SearchBar({ canAdd, regions, onSelect }: SearchBarProps)
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<PokemonBasic[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const isPllinasEasterEgg = query.trim().toLowerCase() === "pllinas";
 
   useEffect(() => {
     if (query.trim().length < 2) {
       setResults([]);
+      return;
+    }
+    if (isPllinasEasterEgg) {
+      setResults([]);
+      setIsLoading(false);
       return;
     }
     const timeoutId = setTimeout(async () => {
@@ -33,7 +40,7 @@ export default function SearchBar({ canAdd, regions, onSelect }: SearchBarProps)
       }
     }, 200);
     return () => clearTimeout(timeoutId);
-  }, [query, regions]);
+  }, [query, regions, isPllinasEasterEgg]);
 
   const showResults = useMemo(() => query.trim().length >= 2, [query]);
 
@@ -56,8 +63,24 @@ export default function SearchBar({ canAdd, regions, onSelect }: SearchBarProps)
       />
       {showResults ? (
         <div className="retro-panel absolute z-20 mt-2 max-h-72 w-full overflow-y-auto">
+          {isPllinasEasterEgg ? (
+            <div className="retro-highlight mx-3 my-3 flex items-center gap-3 px-3 py-3">
+              <img src="/pokeball-8bit.svg" alt="" aria-hidden="true" className="h-10 w-10" />
+              <div className="min-w-0 flex-1">
+                <p className="retro-title text-xs sm:text-sm">Secret Trainer Found</p>
+                <p className="retro-subtext text-lg">PLLINAS used FULL STACK. It&apos;s super effective.</p>
+              </div>
+              <button
+                type="button"
+                onClick={playCatchEmAllSound}
+                className="retro-button shrink-0 px-2 py-1 text-base"
+              >
+                Sound
+              </button>
+            </div>
+          ) : null}
           {isLoading ? <p className="retro-subtext px-4 py-3 text-lg">Loading...</p> : null}
-          {!isLoading && results.length === 0 ? <p className="retro-subtext px-4 py-3 text-lg">No results</p> : null}
+          {!isLoading && results.length === 0 && !isPllinasEasterEgg ? <p className="retro-subtext px-4 py-3 text-lg">No results</p> : null}
           {!isLoading
             ? results.map((pokemon) => (
                 <button

@@ -4,8 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import AnalysisTable from "@/components/AnalysisTable";
 import SearchBar from "@/components/SearchBar";
 import TeamSlots from "@/components/TeamSlots";
-import { analyzeTeam, searchPokemon } from "@/lib/api";
-import { PokemonBasic, TypeCoverageRow } from "@/lib/types";
+import TeamSuggestions from "@/components/TeamSuggestions";
+import { analyzeTeam, searchPokemon, suggestTeam } from "@/lib/api";
+import { PokemonBasic, SuggestionRow, TypeCoverageRow } from "@/lib/types";
 
 const ATTACKING_TYPES = [
   "normal",
@@ -44,6 +45,8 @@ const fromTeamQuery = (raw: string) => raw.split(",").slice(0, 6).map((value) =>
 export default function Home() {
   const [team, setTeam] = useState<Array<PokemonBasic | null>>(EMPTY_TEAM);
   const [coverage, setCoverage] = useState<TypeCoverageRow[]>(EMPTY_COVERAGE);
+  const [focusStat, setFocusStat] = useState("attack");
+  const [suggestions, setSuggestions] = useState<SuggestionRow[]>([]);
   const [isHydratedFromQuery, setIsHydratedFromQuery] = useState(false);
   const selectedCount = useMemo(() => team.filter(Boolean).length, [team]);
 
@@ -90,7 +93,7 @@ export default function Home() {
 
   useEffect(() => {
     const names = team.filter((item): item is PokemonBasic => item !== null).map((item) => item.name);
-    const run = async () => {
+    const runAnalyze = async () => {
       if (names.length === 0) {
         setCoverage(EMPTY_COVERAGE);
         return;
@@ -102,7 +105,23 @@ export default function Home() {
         setCoverage(EMPTY_COVERAGE);
       }
     };
-    run();
+    const runSuggestions = async () => {
+      if (names.length === 0) {
+        setFocusStat("attack");
+        setSuggestions([]);
+        return;
+      }
+      try {
+        const data = await suggestTeam(names);
+        setFocusStat(data.focus_stat);
+        setSuggestions(data.suggestions);
+      } catch {
+        setFocusStat("attack");
+        setSuggestions([]);
+      }
+    };
+    runAnalyze();
+    runSuggestions();
   }, [team]);
 
   const handleAdd = (pokemon: PokemonBasic) => {
@@ -151,6 +170,7 @@ export default function Home() {
         <section>
           <SearchBar canAdd={selectedCount < 6} onSelect={handleAdd} />
           <TeamSlots team={team} onRemove={handleRemove} />
+          <TeamSuggestions focusStat={focusStat} suggestions={suggestions} />
         </section>
         <AnalysisTable rows={coverage} />
       </div>

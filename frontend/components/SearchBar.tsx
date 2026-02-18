@@ -60,10 +60,10 @@ export default function SearchBar({ canAdd, onSelect }: SearchBarProps) {
                   key={pokemon.id}
                   type="button"
                   onClick={() => handleSelect(pokemon)}
-                  className="flex w-full items-start justify-between gap-3 border-b border-slate-100 px-4 py-3 text-left last:border-b-0 hover:bg-slate-50 disabled:cursor-not-allowed"
+                  className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-start gap-3 border-b border-slate-100 px-4 py-3 text-left last:border-b-0 hover:bg-slate-50 disabled:cursor-not-allowed"
                   disabled={!canAdd}
                 >
-                  <span className="min-w-0 truncate text-sm font-medium capitalize text-slate-900">{pokemon.name}</span>
+                  <span className="min-w-0 break-words text-sm font-medium capitalize text-slate-900">{pokemon.name}</span>
                   <span className="shrink-0 text-xs uppercase text-slate-500">{pokemon.types.join(" / ")}</span>
                 </button>
               ))

@@ -13,34 +13,38 @@ export default function TeamSlots({ team, onRemove }: TeamSlotsProps) {
       {team.map((pokemon, index) => (
         <article
           key={index}
-          className="flex min-h-36 flex-col items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm lg:flex-row lg:items-center"
+          className="flex min-h-36 flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
         >
-          {pokemon?.sprite ? (
-            <Image src={pokemon.sprite} alt={pokemon.name} width={72} height={72} className="h-[72px] w-[72px]" />
-          ) : (
-            <div className="flex h-[72px] w-[72px] items-center justify-center rounded-lg bg-slate-100 text-xl font-bold text-slate-400">
-              {index + 1}
+          <div className="flex items-start gap-4">
+            {pokemon?.sprite ? (
+              <Image src={pokemon.sprite} alt={pokemon.name} width={72} height={72} className="h-[72px] w-[72px]" />
+            ) : (
+              <div className="flex h-[72px] w-[72px] items-center justify-center rounded-lg bg-slate-100 text-xl font-bold text-slate-400">
+                {index + 1}
+              </div>
+            )}
+            <div className="min-w-0 flex-1">
+              <p className="text-lg font-semibold text-slate-900">{pokemon ? formatPokemonName(pokemon.name) : "Empty slot"}</p>
             </div>
-          )}
-          <div className="min-w-0 flex-1 self-stretch">
-            <p className="text-lg font-semibold text-slate-900">{pokemon ? formatPokemonName(pokemon.name) : "Empty slot"}</p>
-            <div className="mt-1 flex flex-wrap gap-2">
+            <div className="ml-auto">
+              <button
+                type="button"
+                disabled={!pokemon}
+                onClick={() => onRemove(index)}
+                className="shrink-0 rounded-md border border-slate-300 px-2 py-1 text-xs font-medium text-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+          <div className="min-h-7">
+            <div className="flex flex-wrap gap-2">
               {pokemon?.types?.map((type) => (
                 <span key={type} className="rounded-md bg-slate-100 px-2 py-1 text-xs font-medium uppercase text-slate-700">
                   {type}
                 </span>
               ))}
             </div>
-          </div>
-          <div className="flex w-full justify-end lg:w-auto">
-            <button
-              type="button"
-              disabled={!pokemon}
-              onClick={() => onRemove(index)}
-              className="shrink-0 rounded-md border border-slate-300 px-2 py-1 text-xs font-medium text-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              Remove
-            </button>
           </div>
         </article>
       ))}

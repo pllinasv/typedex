@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.schemas import AnalyzeRequest, AnalyzeResponse, SearchResponse, TypeCoverageRow
+from app.schemas import AnalyzeRequest, AnalyzeResponse, SearchResponse, SuggestionsResponse, TypeCoverageRow
 from app.services.pokeapi import PokeAPIService
 from app.services.typechart import ATTACKING_TYPES, multiplier
 
@@ -57,3 +57,8 @@ async def analyze_team(payload: AnalyzeRequest) -> AnalyzeResponse:
             )
         )
     return AnalyzeResponse(team=team, coverage=coverage)
+
+
+@app.post("/suggestions", response_model=SuggestionsResponse)
+async def suggest_team(payload: AnalyzeRequest, limit: int = Query(default=6, ge=1, le=12)) -> SuggestionsResponse:
+    return await pokeapi_service.suggest(payload.team, limit)
